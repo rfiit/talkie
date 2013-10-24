@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="talkie" default="package">
+
+    <property name="src" location="src/main/java"/>
+    <property name="build" location="target/classes"/>
+
+    <target name="init">
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="package">
+        <javac srcdir="${src}" destdir="${build}"/>
+        <jar destfile="target/talkie-MUSTBEVERSION.jar" basedir="target/classes">
+            <manifest>
+                <attribute name="Main-Class" value="exigen.students.App"/>
+            </manifest>
+        </jar>
+    </target>
+</project>
