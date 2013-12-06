@@ -5,13 +5,31 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   
+    <!--<servlet>-->
+        <!--<servlet-name>first</servlet-name>-->
+        <!--<servlet-class>exigen.students.FirstServlet</servlet-class>-->
+    <!--</servlet>-->
     <servlet>
-        <servlet-name>first</servlet-name>
-        <servlet-class>exigen.students.FirstServlet</servlet-class>
+        <servlet-name>TalkieServlet</servlet-name>
+        <servlet-class>exigen.students.TalkieServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReplyGeneratorServlet</servlet-name>
+        <servlet-class>exigen.students.ReplyGeneratorServlet</servlet-class>
+    </servlet>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>first</servlet-name>-->
+        <!--<url-pattern>/test</url-pattern>-->
+    <!--</servlet-mapping>-->
     <servlet-mapping>
-        <servlet-name>first</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <servlet-name>TalkieServlet</servlet-name>
+        <url-pattern>/requestpage</url-pattern>
+        <!--<url-pattern>/requestpage.php</url-pattern> -->  <!--php mega hacker-->
+        <!--<url-pattern>/requestpage.asp</url-pattern>-->  <!--and asp-->
+        <!--<url-pattern>/requestpage.htm</url-pattern>-->  <!--and static html))-->
     </servlet-mapping>
+    <!--<welcome-file-list>-->
+        <!--<welcome-file>requestpage</welcome-file>-->
+    <!--</welcome-file-list>-->
     
 </web-app>
