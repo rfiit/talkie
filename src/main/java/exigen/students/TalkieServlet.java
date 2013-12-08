@@ -25,7 +25,7 @@ public class TalkieServlet extends HttpServlet {
 //        writer.println("<noscript><form></noscript>\n");
         writer.println("<body>\n request: ");
         writer.println("<input type=\"text\" id=\"request\" name=\"request\" value=\"" + ((rq.getParameter("request") == null) ? "" : rq.getParameter("request")) +"\">\n");
-        writer.println("<script>document.write(\"<button onclick=\\\"getAjaxResponse(document.getElementById('request').value, 'response')\\\">Submit</button>\");</script><br>\n");
+        writer.println("<script>document.write(\"<button onclick=\\\"getAjaxResponse(document.getElementById('request').value, function(txt) {document.getElementById('response').innerHTML=txt;})\\\">Submit</button>\");</script><br>\n");
 //        writer.println("<noscript><button>Submit</button></noscript>\n");
 //        writer.println("<noscript><form></noscript>\n");
         writer.println("<div style=\"float: left;\">response:&nbsp</div>");
