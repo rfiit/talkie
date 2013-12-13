@@ -1,42 +1,64 @@
 package exigen.students;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.*;
 import javax.servlet.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TalkieServlet extends HttpServlet {
+
+    ReplyGenerator replygenerator;
+
+    public void init() throws ServletException {
+        super.init();
+        this.replygenerator = new DefaultReplyGenerator();
+        //getServletContext().setAttribute("QCounter", new Integer(0));
+    }
+
     @Override
     public void doGet(HttpServletRequest rq, HttpServletResponse rp) throws IOException, ServletException{
-        if(rq.getParameter("type") != null && rq.getParameter("type").equals("ajax")) {
-            try {
-                getServletConfig().getServletContext().getNamedDispatcher("ReplyGeneratorServlet").include(rq,rp);
-                return;
-            } catch (Exception e) {
-//                PrintWriter writer = rp.getWriter();
-//                writer.println(e.getStackTrace());
-//                writer.close();
-                //nothing to do
-            }
-        }
-        PrintWriter writer = rp.getWriter();
-        writer.println("<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Talkie Web App</title>\n<script src=\""+rq.getContextPath()+"/resources/js/ajax.js\"></script></head>\n");
-//        writer.println("<body><form>\n request: ");
-//        writer.println("<noscript><form></noscript>\n");
-        writer.println("<body>\n request: ");
-        writer.println("<input type=\"text\" id=\"request\" name=\"request\" value=\"" + ((rq.getParameter("request") == null) ? "" : rq.getParameter("request")) +"\">\n");
-        writer.println("<script>document.write(\"<button onclick=\\\"getAjaxResponse(document.getElementById('request').value, function(txt) {document.getElementById('response').innerHTML=txt;})\\\">Submit</button>\");</script><br>\n");
-//        writer.println("<noscript><button>Submit</button></noscript>\n");
-//        writer.println("<noscript><form></noscript>\n");
-        writer.println("<div style=\"float: left;\">response:&nbsp</div>");
-        writer.println("<div id=\"response\" style=\"float: left;color:green;\">");
+        if(rq.getParameter("request") == null)
+            rp.sendRedirect("index.jsp");
+        //rp.sendRedirect("error.html");
+        String q = replygenerator.generate();
+        addQuestion(getQuestionsFromSession(rq.getSession()), rq.getParameter("request"), q);
+        rq.getSession().setAttribute("MyQCounter",((Integer)rq.getSession().getAttribute("MyQCounter"))+1);
+        rp.getWriter().println(q);
+    }
 
-        if(rq.getParameter("request") != null) {
-            getServletConfig().getServletContext().getNamedDispatcher("ReplyGeneratorServlet").include(rq,rp);
+    private Map<String, QuestionAnswer> getQuestionsFromSession(HttpSession session) {
+        Map<String, QuestionAnswer> questions = (Map<String, QuestionAnswer>) session.getAttribute("questions");
+        if (questions == null) {
+            questions = new LinkedHashMap<String, QuestionAnswer>();
+            session.setAttribute("questions", questions);
         }
+        return questions;
+    }
 
-        writer.println("</div>\n");
-        writer.println("</body></html>");
-        writer.close();
+    private boolean addQuestion(Map<String, QuestionAnswer> savedQuestions, String question, String answer) {
+        if (StringUtils.isEmpty(question) || StringUtils.isEmpty(answer)) {
+            return false;
+        }
+        String id = generateNewId(savedQuestions);
+        savedQuestions.put(id, new QuestionAnswer(question, answer));
+        return true;
+    }
+
+    private String generateNewId(Map<String, QuestionAnswer> savedQuestions) {
+        Integer count = (Integer)getServletContext().getAttribute("QCounter");
+        if (count == null) {
+            getServletContext().setAttribute("QCounter", new Integer(0));
+            count = 0;
+        }
+        count++;
+        while (savedQuestions.containsKey(count+"")) {
+            count++;
+        }
+        getServletContext().setAttribute("QCounter", new Integer(count));
+        return String.valueOf(count);
     }
 }

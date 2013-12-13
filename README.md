@@ -1,4 +1,4 @@
-﻿talkie
+﻿jsp
 ======
 
 Small sample project for students

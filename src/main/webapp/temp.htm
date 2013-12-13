@@ -1,0 +1,52 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<body>
+<%@ page import="exigen.students.QuestionAnswer" %>
+
+
+
+<c:forEach var="qa" items="${session.questions}">
+    <c:set var="thisq" value="${qa.value}"/>
+    <div class="somequestion">
+        <table>
+            <tr class="question">
+                <td class="field">Вопрос:</td>
+                <td>${thisq.question}</td>
+            </tr>
+            <tr class="answer">
+                <td>Ответ:</td>
+                <td>${thisq.answer}</td>
+            </tr>
+        </table>
+    </div>
+</c:forEach>
+</body>
+</html>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ page import="exigen.students.QuestionAnswer" %>
+<%@ page import="java.util.LinkedHashMap" %>
+<%@ page import="java.util.Map" %>
+
+
+
+<%
+Map<String, QuestionAnswer> qmap = (Map<String, QuestionAnswer>)request.getSession().getAttribute("questions");
+out.println(qmap);
+if (qmap != null) for (QuestionAnswer q : qmap) { QuestionAnswer qa = q.value;%>
+<div class="somequestion">
+    <table>
+        <tr class="question">
+            <td class="field">Вопрос:</td>
+            <td><%= qa.question %></td>
+        </tr>
+        <tr class="answer">
+            <td>Ответ:</td>
+            <td><%= qa.answer %></td>
+        </tr>
+    </table>
+</div>
+<%}%>

@@ -4,7 +4,12 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  
+
+    <context-param>
+        <param-name>QCounter</param-name>
+        <param-value>0</param-value>
+    </context-param>
+
     <!--<servlet>-->
         <!--<servlet-name>first</servlet-name>-->
         <!--<servlet-class>exigen.students.FirstServlet</servlet-class>-->
@@ -13,6 +18,12 @@
         <servlet-name>TalkieServlet</servlet-name>
         <servlet-class>exigen.students.TalkieServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>VW</servlet-name>
+        <servlet-class>exigen.students.ViewWrapper</servlet-class>
+    </servlet>
+
     <servlet>
         <servlet-name>ReplyGeneratorServlet</servlet-name>
         <servlet-class>exigen.students.ReplyGeneratorServlet</servlet-class>
@@ -23,11 +34,20 @@
     <!--</servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>TalkieServlet</servlet-name>
-        <url-pattern>/requestpage</url-pattern>
+        <url-pattern>/request</url-pattern>
         <!--<url-pattern>/requestpage.php</url-pattern> -->  <!--php mega hacker-->
         <!--<url-pattern>/requestpage.asp</url-pattern>-->  <!--and asp-->
         <!--<url-pattern>/requestpage.htm</url-pattern>-->  <!--and static html))-->
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>VW</servlet-name>
+        <url-pattern>/viewwrap</url-pattern>
+        <!--<url-pattern>/requestpage.php</url-pattern> -->  <!--php mega hacker-->
+        <!--<url-pattern>/requestpage.asp</url-pattern>-->  <!--and asp-->
+        <!--<url-pattern>/requestpage.htm</url-pattern>-->  <!--and static html))-->
+    </servlet-mapping>
+
     <!--<welcome-file-list>-->
         <!--<welcome-file>requestpage</welcome-file>-->
     <!--</welcome-file-list>-->
