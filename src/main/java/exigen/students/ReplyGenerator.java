@@ -8,4 +8,9 @@ package exigen.students;
 public interface ReplyGenerator {
 
     String generate();
+
+    int generateId();
+
+    String getAnswer(int k);
+
 }

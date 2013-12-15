@@ -1,0 +1,16 @@
+--user create:
+CREATE USER 'talkieuser'@'localhost' IDENTIFIED BY 'talkiepassword';
+GRANT ALL PRIVILEGES ON * . * TO 'talkieuser'@'localhost';
+--database create:
+CREATE DATABASE talkie;
+USE talkie;
+--tables create:
+CREATE TABLE answers (id INT NOT NULL, answer TEXT NOT NULL, PRIMARY KEY(id));
+CREATE TABLE questions (qmd5 CHAR(32) NOT NULL, ansid INT NOT NULL, PRIMARY KEY(qmd5), FOREIGN KEY (ansid) REFERENCES answers(id));
+--add necessary answers:
+INSERT INTO answers  VALUES (1, 'Yes, you can. (1)');
+INSERT INTO answers  VALUES (2, 'No, you cant. (2)');
+INSERT INTO answers  VALUES (3, 'Yes, of course. (3)');
+INSERT INTO answers  VALUES (4, 'Really no. (4)');
+INSERT INTO answers  VALUES (5, 'Really yes. (5)');
+INSERT INTO answers  VALUES (6, 'Absolutely no. (6)');

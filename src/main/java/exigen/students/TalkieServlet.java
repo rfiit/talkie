@@ -12,22 +12,36 @@ import java.util.Map;
 public class TalkieServlet extends HttpServlet {
 
     ReplyGenerator replygenerator;
+    private DataBase db;
 
     public void init() throws ServletException {
         super.init();
-        this.replygenerator = new DefaultReplyGenerator();
-        //getServletContext().setAttribute("QCounter", new Integer(0));
+
+        db = new DataBase();
+
+        this.replygenerator = new DataBaseReplyGenerator(db.getAllAnswers());
+
+
     }
 
     @Override
     public void doGet(HttpServletRequest rq, HttpServletResponse rp) throws IOException, ServletException{
-        if(rq.getParameter("request") == null)
+        String question = rq.getParameter("request");
+
+
+        if(question == null)
             rp.sendRedirect("index.jsp");
         //rp.sendRedirect("error.html");
-        String q = replygenerator.generate();
-        addQuestion(getQuestionsFromSession(rq.getSession()), rq.getParameter("request"), q);
+        String answer = db.getAnswerByQuestion(question);
+        if (answer == null) {
+            int an = replygenerator.generateId();
+            if (!db.addQuestionAndAnswer(question, an)) answer = "ERROR!"; else
+            answer = replygenerator.getAnswer(an);
+        }
+
+        addQuestion(getQuestionsFromSession(rq.getSession()), question, answer);
         rq.getSession().setAttribute("MyQCounter",((Integer)rq.getSession().getAttribute("MyQCounter"))+1);
-        rp.getWriter().println(q);
+        rp.getWriter().println(answer);
     }
 
     private Map<String, QuestionAnswer> getQuestionsFromSession(HttpSession session) {
